@@ -8,11 +8,13 @@ import javax.persistence.Query;
 import org.apache.log4j.Logger;
 import org.springframework.orm.jpa.JpaCallback;
 import org.springframework.orm.jpa.support.JpaDaoSupport;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
  * @author alwold
  */
+@Transactional
 public class JpaUserDao extends JpaDaoSupport implements UserDao {
 	private static Logger logger = Logger.getLogger(JpaUserDao.class);
 
@@ -23,6 +25,7 @@ public class JpaUserDao extends JpaDaoSupport implements UserDao {
 		logger.trace("user id = "+user.getId());
 	}
 
+	@Transactional(readOnly=true)
 	public User getUser(final String email) {
 		return getJpaTemplate().execute(new JpaCallback<User>(){
 
