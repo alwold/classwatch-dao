@@ -1,6 +1,7 @@
 package com.alwold.classwatch.dao;
 
 import com.alwold.classwatch.model.Course;
+import java.util.List;
 
 /**
  *
@@ -8,4 +9,6 @@ import com.alwold.classwatch.model.Course;
  */
 public interface CourseDao {
 	void saveCourse(Course course);
+	List<Course> getCourses(String email);
+	void addCourse(String email, String term, String courseNumber);
 }
