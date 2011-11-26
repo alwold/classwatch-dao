@@ -43,5 +43,10 @@ public class JpaCourseDao extends JpaDaoSupport implements CourseDao {
 			}
 		});
 	}
+
+	public void deleteCourse(Long id) {
+		Course course = getJpaTemplate().find(Course.class, id);
+		getJpaTemplate().remove(course);
+	}
 	
 }

@@ -11,4 +11,5 @@ public interface CourseDao {
 	void saveCourse(Course course);
 	List<Course> getCourses(String email);
 	void addCourse(String email, String term, String courseNumber);
+	void deleteCourse(Long id);
 }
