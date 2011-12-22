@@ -26,7 +26,7 @@ public class JpaCourseDao extends JpaDaoSupport implements CourseDao {
 	}
 	
 	public List<Course> getCourses(String email) {
-		return getJpaTemplate().find("from Course c where c.user.email = ?", email);
+		return getJpaTemplate().find("select uc.pk.course from UserCourse uc where uc.pk.user.email = ?", email);
 	}
 
 	public void addCourse(final String email, final String termCode, final String courseNumber) {
