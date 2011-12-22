@@ -7,6 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -21,13 +22,11 @@ public class Course implements Serializable {
 	@GeneratedValue(strategy= GenerationType.AUTO)
 	@Column(name="COURSE_ID")
 	private Long id;
-	@Column(name="TERM",length=10,nullable=false)
-	private String term;
+	@ManyToOne
+	@JoinColumns({@JoinColumn(name="TERM_CODE"), @JoinColumn(name="SCHOOL_ID")})
+	private Term term;
 	@Column(name="COURSE_NUMBER",length=15,nullable=false)
 	private String courseNumber;
-	@ManyToOne
-	@JoinColumn(name="USER_ID",nullable=false)
-	private User user;
 
 	public String getCourseNumber() {
 		return courseNumber;
@@ -45,19 +44,12 @@ public class Course implements Serializable {
 		this.id = id;
 	}
 
-	public String getTerm() {
+	public Term getTerm() {
 		return term;
 	}
 
-	public void setTerm(String term) {
+	public void setTerm(Term term) {
 		this.term = term;
 	}
 
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
-	}
 }

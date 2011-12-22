@@ -1,26 +1,38 @@
 package com.alwold.classwatch.model;
 
+import java.io.Serializable;
+import java.util.Date;
+import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
 /**
  *
  * @author alwold
  */
-public class Term {
-	private String code;
+@Entity
+@Table(name="TERM")
+public class Term implements Serializable {
+	@EmbeddedId
+	private TermPk pk;
+	@Column(name="NAME", length=100)
 	private String name;
+	@Column(name="START_DATE", nullable=false)
+	@Temporal(TemporalType.DATE)
+	private Date startDate;
+	@Column(name="END_DATE", nullable=false)
+	@Temporal(TemporalType.DATE)
+	private Date endDate;
 	
 	public Term() {}
 
 	public Term(String code, String name) {
-		this.code = code;
+		this.pk = new TermPk();
+		this.pk.setCode(code);
 		this.name = name;
-	}
-
-	public String getCode() {
-		return code;
-	}
-
-	public void setCode(String code) {
-		this.code = code;
 	}
 
 	public String getName() {
@@ -30,4 +42,29 @@ public class Term {
 	public void setName(String name) {
 		this.name = name;
 	}
+
+	public Date getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
+	}
+
+	public TermPk getPk() {
+		return pk;
+	}
+
+	public void setPk(TermPk pk) {
+		this.pk = pk;
+	}
+
+	public Date getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
+	}
+
 }

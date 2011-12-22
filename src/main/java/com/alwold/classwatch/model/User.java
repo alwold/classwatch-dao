@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import org.apache.commons.codec.digest.DigestUtils;
 
@@ -26,6 +27,7 @@ public class User implements Serializable {
 	private String password;
 	@Column(name="PHONE",length=25,nullable=true)
 	private String phone;
+	@OneToMany
 
 	public Long getId() {
 		return id;
