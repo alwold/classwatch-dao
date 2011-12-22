@@ -18,7 +18,7 @@ import javax.persistence.TemporalType;
 public class Term implements Serializable {
 	@EmbeddedId
 	private TermPk pk;
-	@Column(name="NAME", length=100)
+	@Column(name="NAME", length=100, nullable=false)
 	private String name;
 	@Column(name="START_DATE", nullable=false)
 	@Temporal(TemporalType.DATE)
