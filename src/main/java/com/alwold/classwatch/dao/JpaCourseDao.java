@@ -72,9 +72,23 @@ public class JpaCourseDao extends JpaDaoSupport implements CourseDao {
 		});
 	}
 
-	public void deleteCourse(Long id) {
-		Course course = getJpaTemplate().find(Course.class, id);
-		getJpaTemplate().remove(course);
+	public void deleteCourse(final String email, final Long courseId) {
+		getJpaTemplate().execute(new JpaCallback<Object>(){
+
+			public Object doInJpa(EntityManager em) throws PersistenceException {
+				Course course = em.find(Course.class, courseId);
+				User user = em.createQuery("from User u where u.email = ?", User.class)
+						.setParameter(1, email)
+						.getSingleResult();
+				UserCoursePk pk = new UserCoursePk();
+				pk.setCourse(course);
+				pk.setUser(user);
+
+				UserCourse userCourse = em.find(UserCourse.class, pk);
+				em.remove(userCourse);
+				return null;
+			}
+		});
 	}
 	
 }
