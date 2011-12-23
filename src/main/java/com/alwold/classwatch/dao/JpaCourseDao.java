@@ -7,6 +7,7 @@ import com.alwold.classwatch.model.UserCourse;
 import com.alwold.classwatch.model.UserCoursePk;
 import java.util.List;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceException;
 import org.apache.log4j.Logger;
 import org.springframework.orm.jpa.JpaCallback;
@@ -35,31 +36,36 @@ public class JpaCourseDao extends JpaDaoSupport implements CourseDao {
 			public Object doInJpa(EntityManager em) throws PersistenceException {
 				// load the course
 				// TODO add school
-				String schoolId = "asu";
-				Course course = em.createQuery("from Course c where c.term.pk.termCode = ? and c.term.pk.school.id = ? and c.courseNumber = ?", Course.class)
-						.setParameter(1, termCode)
-						.setParameter(2, schoolId)
-						.setParameter(3, courseNumber)
-						.getSingleResult();
-				if (course == null) {
+				Long schoolId = 1L;
+				Course course;
+				logger.trace("looking for course");
+				try {
+					course = em.createQuery("from Course c where c.term.pk.code = ? and c.term.pk.school.id = ? and c.courseNumber = ?", Course.class)
+							.setParameter(1, termCode)
+							.setParameter(2, schoolId)
+							.setParameter(3, courseNumber)
+							.getSingleResult();
+				} catch (NoResultException e) {
 					course = new Course();
-					Term term = em.createQuery("from Term t where t.pk.termCode = ? and t.pk.school.id = ?", Term.class)
+					Term term = em.createQuery("from Term t where t.pk.code = ? and t.pk.school.id = ?", Term.class)
 							.setParameter(1, termCode)
 							.setParameter(2, schoolId)
 							.getSingleResult();
 					course.setTerm(term);
 					course.setCourseNumber(courseNumber);
+					logger.trace("persisting course");
+					em.persist(course);
 				}
 
 				logger.trace("finding user");
 				User user = (User) em.createQuery("from User u where u.email = ?").setParameter(1, email).getSingleResult();
-				logger.trace("got a user? "+(user != null));
 				UserCourse userCourse = new UserCourse();
 				UserCoursePk userCoursePk = new UserCoursePk();
 				userCoursePk.setUser(user);
 				userCoursePk.setCourse(course);
 				userCourse.setPk(userCoursePk);
 				userCourse.setNotified(false);
+				logger.trace("persisting UserCourse");
 				em.persist(userCourse);
 				return null;
 			}
