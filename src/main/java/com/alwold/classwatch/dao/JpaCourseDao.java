@@ -1,10 +1,14 @@
 package com.alwold.classwatch.dao;
 
 import com.alwold.classwatch.model.Course;
+import com.alwold.classwatch.model.CourseStatus;
+import com.alwold.classwatch.model.CourseStatusPk;
+import com.alwold.classwatch.model.Status;
 import com.alwold.classwatch.model.Term;
 import com.alwold.classwatch.model.User;
 import com.alwold.classwatch.model.UserCourse;
 import com.alwold.classwatch.model.UserCoursePk;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -86,6 +90,30 @@ public class JpaCourseDao extends JpaDaoSupport implements CourseDao {
 
 				UserCourse userCourse = em.find(UserCourse.class, pk);
 				em.remove(userCourse);
+				return null;
+			}
+		});
+	}
+
+	public void logStatus(final Long courseId, final Status status) {
+		logger.trace("logging status "+status+" for "+courseId);
+		getJpaTemplate().execute(new JpaCallback<Object>(){
+
+			public Object doInJpa(EntityManager em) throws PersistenceException {
+				Course course = em.find(Course.class, courseId);
+				List<CourseStatus> statuses = em.createQuery("from CourseStatus cs where cs.pk.course = ? order by cs.pk.timestamp").getResultList();
+				if (statuses.isEmpty() || statuses.get(0).getStatus() != status) {
+					logger.trace("no existing status or different latest status");
+					CourseStatus cs = new CourseStatus();
+					CourseStatusPk pk = new CourseStatusPk();
+					pk.setCourse(course);
+					pk.setTimestamp(new Date());
+					cs.setPk(pk);
+					cs.setStatus(status);
+					em.persist(cs);
+				} else {
+					logger.trace("same status, not logging");
+				}
 				return null;
 			}
 		});
