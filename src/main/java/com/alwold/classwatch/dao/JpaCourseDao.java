@@ -120,5 +120,28 @@ public class JpaCourseDao extends JpaDaoSupport implements CourseDao {
 			}
 		});
 	}
+
+	public List<User> getActiveWatchers(Course course) {
+		return getJpaTemplate().find("select uc.pk.user from UserCourse uc where uc.pk.course = ? and uc.notified = ?", course, false);
+	}
+	
+	public List<Course> getCoursesWithWatchers() {
+		return getJpaTemplate().find("select distinct c from Course c, in (c.userCourses) uc where uc.notified = ? and c.term.startDate <= current_date and c.term.endDate >= current_date", false);
+	}
+	
+	public void setNotified(final User user, final Course course) {
+		getJpaTemplate().execute(new JpaCallback<Object>(){
+
+			public Object doInJpa(EntityManager em) throws PersistenceException {
+				UserCoursePk userCoursePk = new UserCoursePk();
+				userCoursePk.setUser(user);
+				userCoursePk.setCourse(course);
+				UserCourse uc = em.find(UserCourse.class, userCoursePk);
+				uc.setNotified(true);
+				em.persist(uc);
+				return null;
+			}
+		});
+	}
 	
 }
