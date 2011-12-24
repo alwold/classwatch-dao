@@ -4,6 +4,8 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Table;
 
 /**
@@ -16,6 +18,7 @@ public class CourseStatus implements Serializable {
 	@EmbeddedId
 	private CourseStatusPk pk;
 	@Column(name="STATUS")
+	@Enumerated(EnumType.STRING)
 	private Status status;
 
 	public CourseStatusPk getPk() {
