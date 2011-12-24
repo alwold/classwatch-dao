@@ -1,6 +1,7 @@
 package com.alwold.classwatch.model;
 
 import java.io.Serializable;
+import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -27,6 +29,8 @@ public class Course implements Serializable {
 	private Term term;
 	@Column(name="COURSE_NUMBER",length=15,nullable=false)
 	private String courseNumber;
+	@OneToMany(mappedBy="pk.course")
+	private Set<UserCourse> userCourses;
 
 	public String getCourseNumber() {
 		return courseNumber;
@@ -50,6 +54,14 @@ public class Course implements Serializable {
 
 	public void setTerm(Term term) {
 		this.term = term;
+	}
+
+	public Set<UserCourse> getUserCourses() {
+		return userCourses;
+	}
+
+	public void setUserCourses(Set<UserCourse> userCourses) {
+		this.userCourses = userCourses;
 	}
 
 }
