@@ -101,7 +101,9 @@ public class JpaCourseDao extends JpaDaoSupport implements CourseDao {
 
 			public Object doInJpa(EntityManager em) throws PersistenceException {
 				Course course = em.find(Course.class, courseId);
-				List<CourseStatus> statuses = em.createQuery("from CourseStatus cs where cs.pk.course = ? order by cs.pk.timestamp").getResultList();
+				List<CourseStatus> statuses = em.createQuery("from CourseStatus cs where cs.pk.course = ? order by cs.pk.timestamp")
+						.setParameter(1, course)
+						.getResultList();
 				if (statuses.isEmpty() || statuses.get(0).getStatus() != status) {
 					logger.trace("no existing status or different latest status");
 					CourseStatus cs = new CourseStatus();
