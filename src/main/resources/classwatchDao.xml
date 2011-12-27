@@ -33,9 +33,13 @@
 		<property name="entityManagerFactory" ref="emf"/>
 	</bean>
 
-	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+	<bean id="notificationDao" class="com.alwold.classwatch.dao.JpaNotificationDao">
 		<property name="entityManagerFactory" ref="emf"/>
 	</bean>
 
+	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+		<property name="entityManagerFactory" ref="emf"/>
+	</bean>
+	
 	<tx:annotation-driven transaction-manager="transactionManager"/>
 </beans>

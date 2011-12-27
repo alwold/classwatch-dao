@@ -1,0 +1,32 @@
+package com.alwold.classwatch.dao;
+
+import com.alwold.classwatch.model.Course;
+import com.alwold.classwatch.model.Notification;
+import com.alwold.classwatch.model.NotificationPk;
+import com.alwold.classwatch.model.User;
+import java.util.Date;
+import org.apache.log4j.Logger;
+import org.springframework.orm.jpa.support.JpaDaoSupport;
+import org.springframework.transaction.annotation.Transactional;
+
+/**
+ *
+ * @author alwold
+ */
+@Transactional
+public class JpaNotificationDao extends JpaDaoSupport implements NotificationDao {
+	private static Logger logger = Logger.getLogger(JpaNotificationDao.class);
+
+	public void logNotification(Course course, User user, String type) {
+		NotificationPk notificationPk = new NotificationPk();
+		notificationPk.setCourse(course);
+		notificationPk.setUser(user);
+		notificationPk.setType(type);
+		notificationPk.setTimestamp(new Date());
+		Notification notification = new Notification();
+		notification.setPk(notificationPk);
+		logger.trace("persisting notification");
+		getJpaTemplate().persist(notification);
+	}
+	
+}
