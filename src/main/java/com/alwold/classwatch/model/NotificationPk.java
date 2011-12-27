@@ -24,8 +24,8 @@ public class NotificationPk implements Serializable {
 	@Column(name="NOTIFICATION_TIMESTAMP")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date timestamp;
-	@Column(name="METHOD", length=50)
-	private String method;
+	@Column(name="TYPE", length=50)
+	private String type;
 
 	public Course getCourse() {
 		return course;
@@ -33,14 +33,6 @@ public class NotificationPk implements Serializable {
 
 	public void setCourse(Course course) {
 		this.course = course;
-	}
-
-	public String getMethod() {
-		return method;
-	}
-
-	public void setMethod(String method) {
-		this.method = method;
 	}
 
 	public Date getTimestamp() {
@@ -58,5 +50,13 @@ public class NotificationPk implements Serializable {
 	public void setUser(User user) {
 		this.user = user;
 	}
-	
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
 }
