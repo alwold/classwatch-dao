@@ -66,5 +66,16 @@
       <artifactId>spring-context-support</artifactId>
       <version>3.0.6.RELEASE</version>
     </dependency>
+    <dependency>
+      <groupId>com.google.code.google-voice-java</groupId>
+      <artifactId>google-voice-java</artifactId>
+      <version>1.10</version>
+    </dependency>
+    <dependency>
+      <groupId>com.google.code.google-voice-java</groupId>
+      <artifactId>json</artifactId>
+      <version>UNKNOWN</version>
+	  <scope>runtime</scope>
+    </dependency>
   </dependencies>
 </project>
