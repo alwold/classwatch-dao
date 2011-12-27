@@ -9,5 +9,5 @@ import com.alwold.classwatch.school.ClassInfo;
  * @author alwold
  */
 public interface Notifier {
-	void notify(User user, Course course, ClassInfo classInfo);
+	void notify(User user, Course course, ClassInfo classInfo) throws NotificationException;
 }

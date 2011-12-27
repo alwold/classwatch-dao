@@ -18,7 +18,7 @@ public class EmailNotifier implements Notifier {
 	private MailSender mailSender;
 	private SimpleMailMessage templateMessage;
 
-	public void notify(User user, Course course, ClassInfo classInfo) {
+	public void notify(User user, Course course, ClassInfo classInfo) throws NotificationException {
 		SimpleMailMessage msg = new SimpleMailMessage(templateMessage);
 		msg.setTo(user.getEmail());
 		msg.setText("Hello,\nThis is the friendly robot at Classwatch. Your class at "+
@@ -28,7 +28,7 @@ public class EmailNotifier implements Notifier {
 		try {
 			mailSender.send(msg);
 		} catch (MailException ex) {
-			logger.error(ex);
+			throw new NotificationException(ex);
 		}
 	}
 
