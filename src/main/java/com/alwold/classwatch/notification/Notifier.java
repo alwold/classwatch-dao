@@ -10,4 +10,6 @@ import com.alwold.classwatch.school.ClassInfo;
  */
 public interface Notifier {
 	void notify(User user, Course course, ClassInfo classInfo) throws NotificationException;
+	String getType();
+	String getDescription();
 }

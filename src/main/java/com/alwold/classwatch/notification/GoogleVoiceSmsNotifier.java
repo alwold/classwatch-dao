@@ -31,4 +31,12 @@ public class GoogleVoiceSmsNotifier implements Notifier {
 	public void setUsername(String username) {
 		this.username = username;
 	}
+
+	public String getType() {
+		return "GVSMS";
+	}
+
+	public String getDescription() {
+		return "Text Message";
+	}
 }

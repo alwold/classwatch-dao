@@ -39,4 +39,12 @@ public class EmailNotifier implements Notifier {
 	public void setTemplateMessage(SimpleMailMessage templateMessage) {
 		this.templateMessage = templateMessage;
 	}
+
+	public String getType() {
+		return "EMAIL";
+	}
+
+	public String getDescription() {
+		return "Email";
+	}
 }
