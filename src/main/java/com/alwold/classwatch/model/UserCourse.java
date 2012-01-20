@@ -18,6 +18,10 @@ public class UserCourse implements Serializable {
 	@Column(name="NOTIFIED", nullable=false)
 	private boolean notified;
 
+	/**
+	 * Have notifications been delivered or queued?
+	 * @return true if delivered or queued, false otherwise
+	 */
 	public boolean isNotified() {
 		return notified;
 	}
