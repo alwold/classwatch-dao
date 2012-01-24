@@ -9,4 +9,5 @@ import java.util.List;
  */
 public interface TermDao {
 	List<Term> getTerms(Long schoolId);
+	Term getTerm(Long schoolId, String termCode);
 }
