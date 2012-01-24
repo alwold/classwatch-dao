@@ -21,7 +21,7 @@ public class JpaUserDao extends JpaDaoSupport implements UserDao {
 	public void saveUser(User user) {
 		logger.trace("saving user");
 		logger.trace("email = "+user.getEmail());
-		getJpaTemplate().persist(user);
+		getJpaTemplate().merge(user);
 		logger.trace("user id = "+user.getId());
 	}
 
