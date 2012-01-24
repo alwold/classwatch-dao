@@ -1,5 +1,7 @@
 package com.alwold.classwatch.dao;
 
+import com.alwold.classwatch.model.NotifierSetting;
+import com.alwold.classwatch.model.NotifierSettingPk;
 import com.alwold.classwatch.model.User;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -41,5 +43,22 @@ public class JpaUserDao extends JpaDaoSupport implements UserDao {
 				}
 			}
 		});
+	}
+
+	public List<NotifierSetting> getNotifierSettings(User user) {
+		return getJpaTemplate().find("from NotifierSetting where pk.user = ?", user);
+	}
+
+	public void setNotifierEnabled(User user, String type, boolean enabled) {
+		NotifierSettingPk pk = new NotifierSettingPk();
+		pk.setUser(user);
+		pk.setType(type);
+		NotifierSetting setting = getJpaTemplate().find(NotifierSetting.class, pk);
+		if (setting == null) {
+			setting = new NotifierSetting();
+			setting.setPk(pk);
+		}
+		setting.setEnabled(enabled);
+		getJpaTemplate().merge(setting);
 	}
 }
