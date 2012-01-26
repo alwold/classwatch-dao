@@ -3,7 +3,9 @@ package com.alwold.classwatch.dao;
 import com.alwold.classwatch.model.NotifierSetting;
 import com.alwold.classwatch.model.NotifierSettingPk;
 import com.alwold.classwatch.model.User;
+import java.util.Calendar;
 import java.util.List;
+import java.util.UUID;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
@@ -60,5 +62,15 @@ public class JpaUserDao extends JpaDaoSupport implements UserDao {
 		}
 		setting.setEnabled(enabled);
 		getJpaTemplate().merge(setting);
+	}
+
+	public String generateResetToken(String email) {
+		User user = getUser(email);
+		user.setResetToken(UUID.randomUUID().toString());
+		Calendar expiration = Calendar.getInstance();
+		expiration.roll(Calendar.DATE, 1);
+		user.setResetTokenExpiration(expiration.getTime());
+		getJpaTemplate().merge(user);
+		return user.getResetToken();
 	}
 }
