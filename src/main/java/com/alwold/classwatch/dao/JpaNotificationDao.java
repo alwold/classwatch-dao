@@ -41,7 +41,7 @@ public class JpaNotificationDao extends JpaDaoSupport implements NotificationDao
 	}
 
 	public List<Notification> getNotifications(String email) {
-		return getJpaTemplate().find("from Notification n join n.pk.user as user where user.email = ?", email);
+		return getJpaTemplate().find("select n from Notification n join n.pk.user as user where user.email = ?", email);
 	}
 	
 }
