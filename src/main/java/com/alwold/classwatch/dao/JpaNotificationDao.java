@@ -5,7 +5,10 @@ import com.alwold.classwatch.model.Notification;
 import com.alwold.classwatch.model.NotificationPk;
 import com.alwold.classwatch.model.NotificationStatus;
 import com.alwold.classwatch.model.User;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 import org.apache.log4j.Logger;
 import org.springframework.orm.jpa.support.JpaDaoSupport;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,6 +40,10 @@ public class JpaNotificationDao extends JpaDaoSupport implements NotificationDao
 		notification.setInfo(info);
 		logger.trace("persisting notification");
 		getJpaTemplate().persist(notification);
+	}
+
+	public List<Notification> getNotifications(String email) {
+		return getJpaTemplate().find("from Notification n join n.pk.user as user where user.email = ?", email);
 	}
 	
 }
