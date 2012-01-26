@@ -5,8 +5,6 @@ import com.alwold.classwatch.model.Notification;
 import com.alwold.classwatch.model.NotificationPk;
 import com.alwold.classwatch.model.NotificationStatus;
 import com.alwold.classwatch.model.User;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import org.apache.log4j.Logger;
