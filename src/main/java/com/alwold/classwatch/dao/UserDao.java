@@ -14,5 +14,7 @@ public interface UserDao {
 	public List<NotifierSetting> getNotifierSettings(User user);
 	public void setNotifierEnabled(User user, String type, boolean enabled);
 	public String generateResetToken(String email);
+
+	public boolean isNotifierEnabled(User user, String type);
 	
 }

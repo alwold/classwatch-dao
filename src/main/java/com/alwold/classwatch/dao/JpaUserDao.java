@@ -73,4 +73,16 @@ public class JpaUserDao extends JpaDaoSupport implements UserDao {
 		getJpaTemplate().merge(user);
 		return user.getResetToken();
 	}
+
+	public boolean isNotifierEnabled(User user, String type) {
+		NotifierSettingPk pk = new NotifierSettingPk();
+		pk.setUser(user);
+		pk.setType(type);
+		NotifierSetting setting = getJpaTemplate().find(NotifierSetting.class, pk);
+		if (setting != null && setting.getEnabled()) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 }
