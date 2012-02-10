@@ -22,7 +22,7 @@ public class EmailNotifier implements Notifier {
 		SimpleMailMessage msg = new SimpleMailMessage(templateMessage);
 		msg.setTo(user.getEmail());
 		msg.setText("Hello,\nThis is the friendly robot at Classwatch. Your class at "+
-				course.getTerm().getPk().getSchool().getName()+", "+
+				course.getTerm().getSchool().getName()+", "+
 				course.getCourseNumber()+" ("+classInfo.getName()+
 				") is now available.  You should register as soon as possible.");
 		try {

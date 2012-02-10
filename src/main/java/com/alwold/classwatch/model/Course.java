@@ -25,7 +25,7 @@ public class Course implements Serializable {
 	@Column(name="COURSE_ID")
 	private Long id;
 	@ManyToOne
-	@JoinColumns({@JoinColumn(name="TERM_CODE"), @JoinColumn(name="SCHOOL_ID")})
+	@JoinColumn(name="TERM_ID")
 	private Term term;
 	@Column(name="COURSE_NUMBER",length=15,nullable=false)
 	private String courseNumber;
