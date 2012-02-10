@@ -21,7 +21,7 @@ import javax.persistence.TemporalType;
 @Table(name="TERM")
 public class Term implements Serializable {
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="TERM_ID")
 	private Long id;
 	@Column(name="TERM_CODE", length=10)

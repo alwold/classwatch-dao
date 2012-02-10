@@ -21,7 +21,7 @@ import javax.persistence.Table;
 @Table(name="COURSE")
 public class Course implements Serializable {
 	@Id
-	@GeneratedValue(strategy= GenerationType.AUTO)
+	@GeneratedValue(strategy= GenerationType.IDENTITY)
 	@Column(name="COURSE_ID")
 	private Long id;
 	@ManyToOne

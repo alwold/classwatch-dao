@@ -23,7 +23,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 	uniqueConstraints={@UniqueConstraint(columnNames={"EMAIL"}), @UniqueConstraint(columnNames={"RESET_PASSWORD_TOKEN"})})
 public class User implements Serializable {
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="USER_ID")
 	private Long id;
 	@Column(name="EMAIL",length=25,nullable=false)
