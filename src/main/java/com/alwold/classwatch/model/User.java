@@ -1,13 +1,13 @@
 package com.alwold.classwatch.model;
 
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -20,7 +20,7 @@ import org.apache.commons.codec.digest.DigestUtils;
  */
 @Entity
 @Table(name="USERS",
-	uniqueConstraints={@UniqueConstraint(columnNames={"EMAIL"})})
+	uniqueConstraints={@UniqueConstraint(columnNames={"EMAIL"}), @UniqueConstraint(columnNames={"RESET_PASSWORD_TOKEN"})})
 public class User implements Serializable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -28,15 +28,31 @@ public class User implements Serializable {
 	private Long id;
 	@Column(name="EMAIL",length=25,nullable=false)
 	private String email;
-	@Column(name="PASSWORD",length=1024,nullable=false)
+	@Column(name="ENCRYPTED_PASSWORD",length=1024,nullable=false)
 	private String password;
 	@Column(name="PHONE",length=25,nullable=true)
 	private String phone;
-	@Column(name="RESET_TOKEN", length=255, nullable=true)
+	@Column(name="RESET_PASSWORD_TOKEN", length=255, nullable=true)
 	private String resetToken;
-	@Column(name="RESET_TOKEN_EXPIRATION", nullable=true)
+	@Column(name="RESET_PASSWORD_SENT_AT", nullable=true)
 	@Temporal(TemporalType.TIMESTAMP)
-	private Date resetTokenExpiration;
+	private Date resetTokenSentAt;
+	@Column(name="REMEMBER_CREATED_AT", nullable=true)
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date rememberCreatedAt;
+	@Column(name="SIGN_IN_COUNT", nullable=true)
+	private Integer signInCount;
+	@Column(name="CURRENT_SIGN_IN_AT")
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date currentSignInAt;
+	@Column(name="LAST_SIGN_IN_AT")
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date lastSignInAt;
+	@Column(name="CURRENT_SIGN_IN_IP")
+	private String currentSignInIp;
+	@Column(name="LAST_SIGN_IN_IP")
+	private String lastSignInIp;
+	
 
 	public Long getId() {
 		return id;
@@ -78,14 +94,69 @@ public class User implements Serializable {
 		this.resetToken = resetToken;
 	}
 
-	public Date getResetTokenExpiration() {
-		return resetTokenExpiration;
+	public Date getResetTokenSentAt() {
+		return resetTokenSentAt;
 	}
 
-	public void setResetTokenExpiration(Date resetTokenExpiration) {
-		this.resetTokenExpiration = resetTokenExpiration;
+	public void setResetTokenSentAt(Date resetTokenSentAt) {
+		this.resetTokenSentAt = resetTokenSentAt;
 	}
-	
+
+	public Date getCurrentSignInAt() {
+		return currentSignInAt;
+	}
+
+	public void setCurrentSignInAt(Date currentSignInAt) {
+		this.currentSignInAt = currentSignInAt;
+	}
+
+	public String getCurrentSignInIp() {
+		return currentSignInIp;
+	}
+
+	public void setCurrentSignInIp(String currentSignInIp) {
+		this.currentSignInIp = currentSignInIp;
+	}
+
+	public Date getLastSignInAt() {
+		return lastSignInAt;
+	}
+
+	public void setLastSignInAt(Date lastSignInAt) {
+		this.lastSignInAt = lastSignInAt;
+	}
+
+	public String getLastSignInIp() {
+		return lastSignInIp;
+	}
+
+	public void setLastSignInIp(String lastSignInIp) {
+		this.lastSignInIp = lastSignInIp;
+	}
+
+	public Date getRememberCreatedAt() {
+		return rememberCreatedAt;
+	}
+
+	public void setRememberCreatedAt(Date rememberCreatedAt) {
+		this.rememberCreatedAt = rememberCreatedAt;
+	}
+
+	public Integer getSignInCount() {
+		return signInCount;
+	}
+
+	public void setSignInCount(Integer signInCount) {
+		this.signInCount = signInCount;
+	}
+
+	public Date getResetTokenExpiration() {
+		Calendar expiration = Calendar.getInstance();
+		expiration.setTime(resetTokenSentAt);
+		expiration.roll(Calendar.DATE, 1);
+		return expiration.getTime();
+	}
+
 	public static String encryptPassword(String password) {
 		// TODO salt
 		return DigestUtils.sha256Hex(password);

@@ -3,7 +3,7 @@ package com.alwold.classwatch.dao;
 import com.alwold.classwatch.model.NotifierSetting;
 import com.alwold.classwatch.model.NotifierSettingPk;
 import com.alwold.classwatch.model.User;
-import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import javax.persistence.EntityManager;
@@ -67,9 +67,7 @@ public class JpaUserDao extends JpaDaoSupport implements UserDao {
 	public String generateResetToken(String email) {
 		User user = getUser(email);
 		user.setResetToken(UUID.randomUUID().toString());
-		Calendar expiration = Calendar.getInstance();
-		expiration.roll(Calendar.DATE, 1);
-		user.setResetTokenExpiration(expiration.getTime());
+		user.setResetTokenSentAt(new Date());
 		getJpaTemplate().merge(user);
 		return user.getResetToken();
 	}
