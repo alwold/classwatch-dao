@@ -7,7 +7,6 @@ import com.alwold.classwatch.model.Status;
 import com.alwold.classwatch.model.Term;
 import com.alwold.classwatch.model.User;
 import com.alwold.classwatch.model.UserCourse;
-import com.alwold.classwatch.model.UserCoursePk;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -31,7 +30,7 @@ public class JpaCourseDao extends JpaDaoSupport implements CourseDao {
 	}
 	
 	public List<Course> getCourses(String email) {
-		return getJpaTemplate().find("select uc.pk.course from UserCourse uc where uc.pk.user.email = ?", email);
+		return getJpaTemplate().find("select uc.course from UserCourse uc where uc.user.email = ?", email);
 	}
 
 	public void addCourse(final String email, final String termCode, final String courseNumber) {
@@ -44,14 +43,14 @@ public class JpaCourseDao extends JpaDaoSupport implements CourseDao {
 				Course course;
 				logger.trace("looking for course");
 				try {
-					course = em.createQuery("from Course c where c.term.pk.code = ? and c.term.pk.school.id = ? and c.courseNumber = ?", Course.class)
+					course = em.createQuery("from Course c where c.term.code = ? and c.term.school.id = ? and c.courseNumber = ?", Course.class)
 							.setParameter(1, termCode)
 							.setParameter(2, schoolId)
 							.setParameter(3, courseNumber)
 							.getSingleResult();
 				} catch (NoResultException e) {
 					course = new Course();
-					Term term = em.createQuery("from Term t where t.pk.code = ? and t.pk.school.id = ?", Term.class)
+					Term term = em.createQuery("from Term t where t.code = ? and t.school.id = ?", Term.class)
 							.setParameter(1, termCode)
 							.setParameter(2, schoolId)
 							.getSingleResult();
@@ -64,10 +63,8 @@ public class JpaCourseDao extends JpaDaoSupport implements CourseDao {
 				logger.trace("finding user");
 				User user = (User) em.createQuery("from User u where u.email = ?").setParameter(1, email).getSingleResult();
 				UserCourse userCourse = new UserCourse();
-				UserCoursePk userCoursePk = new UserCoursePk();
-				userCoursePk.setUser(user);
-				userCoursePk.setCourse(course);
-				userCourse.setPk(userCoursePk);
+				userCourse.setUser(user);
+				userCourse.setCourse(course);
 				userCourse.setNotified(false);
 				logger.trace("persisting UserCourse");
 				em.persist(userCourse);
@@ -84,11 +81,7 @@ public class JpaCourseDao extends JpaDaoSupport implements CourseDao {
 				User user = em.createQuery("from User u where u.email = ?", User.class)
 						.setParameter(1, email)
 						.getSingleResult();
-				UserCoursePk pk = new UserCoursePk();
-				pk.setCourse(course);
-				pk.setUser(user);
-
-				UserCourse userCourse = em.find(UserCourse.class, pk);
+				UserCourse userCourse = (UserCourse) em.createQuery("from UserCourse uc where uc.course = ? and uc.user = ?").setParameter(1, course).setParameter(2, user).getSingleResult();
 				em.remove(userCourse);
 				return null;
 			}
@@ -133,10 +126,7 @@ public class JpaCourseDao extends JpaDaoSupport implements CourseDao {
 		getJpaTemplate().execute(new JpaCallback<Object>(){
 
 			public Object doInJpa(EntityManager em) throws PersistenceException {
-				UserCoursePk userCoursePk = new UserCoursePk();
-				userCoursePk.setUser(user);
-				userCoursePk.setCourse(course);
-				UserCourse uc = em.find(UserCourse.class, userCoursePk);
+				UserCourse uc = (UserCourse) em.createQuery("from UserCourse uc where uc.course = ? and uc.user = ?").setParameter(1, course).setParameter(2, user).getSingleResult();
 				uc.setNotified(true);
 				em.persist(uc);
 				return null;

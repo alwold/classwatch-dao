@@ -8,7 +8,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -29,7 +28,7 @@ public class Course implements Serializable {
 	private Term term;
 	@Column(name="COURSE_NUMBER",length=15,nullable=false)
 	private String courseNumber;
-	@OneToMany(mappedBy="pk.course")
+	@OneToMany(mappedBy="course")
 	private Set<UserCourse> userCourses;
 
 	public String getCourseNumber() {
