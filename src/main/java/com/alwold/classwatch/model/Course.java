@@ -11,13 +11,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 /**
  *
  * @author alwold
  */
 @Entity
-@Table(name="COURSE")
+@Table(name="COURSE", uniqueConstraints=@UniqueConstraint(columnNames={"TERM_ID", "COURSE_NUMBER"}))
 public class Course implements Serializable {
 	@Id
 	@GeneratedValue(strategy= GenerationType.IDENTITY)
