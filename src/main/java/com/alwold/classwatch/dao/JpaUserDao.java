@@ -1,12 +1,12 @@
 package com.alwold.classwatch.dao;
 
 import com.alwold.classwatch.model.NotifierSetting;
-import com.alwold.classwatch.model.NotifierSettingPk;
 import com.alwold.classwatch.model.User;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import javax.persistence.EntityManager;
+import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 import org.apache.log4j.Logger;
@@ -52,13 +52,14 @@ public class JpaUserDao extends JpaDaoSupport implements UserDao {
 	}
 
 	public void setNotifierEnabled(User user, String type, boolean enabled) {
-		NotifierSettingPk pk = new NotifierSettingPk();
-		pk.setUser(user);
-		pk.setType(type);
-		NotifierSetting setting = getJpaTemplate().find(NotifierSetting.class, pk);
-		if (setting == null) {
+		List<NotifierSetting> settings = getJpaTemplate().find("from NotifierSetting where user = ? and type = ?", user, type);
+		NotifierSetting setting = null;
+		if (settings.isEmpty()) {
 			setting = new NotifierSetting();
-			setting.setPk(pk);
+		} else if (settings.size() == 1) {
+			setting = settings.get(0);
+		} else {
+			throw new NonUniqueResultException();
 		}
 		setting.setEnabled(enabled);
 		getJpaTemplate().merge(setting);
@@ -73,11 +74,10 @@ public class JpaUserDao extends JpaDaoSupport implements UserDao {
 	}
 
 	public boolean isNotifierEnabled(User user, String type) {
-		NotifierSettingPk pk = new NotifierSettingPk();
-		pk.setUser(user);
-		pk.setType(type);
-		NotifierSetting setting = getJpaTemplate().find(NotifierSetting.class, pk);
-		if (setting != null && setting.getEnabled()) {
+		List<NotifierSetting> settings = getJpaTemplate().find("from NotifierSetting where user = ? and type = ?", user, type);
+		if (settings.size() > 1) {
+			throw new NonUniqueResultException();
+		} else if (settings.size() == 1 && settings.get(0).getEnabled()) {
 			return true;
 		} else {
 			return false;
