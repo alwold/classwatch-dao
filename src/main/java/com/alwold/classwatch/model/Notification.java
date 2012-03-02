@@ -2,24 +2,30 @@ package com.alwold.classwatch.model;
 
 import java.io.Serializable;
 import java.util.Date;
-import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 
 /**
  *
  * @author alwold
  */
 @Entity
-@Table(name="NOTIFICATION")
+@Table(name="NOTIFICATION", uniqueConstraints={@UniqueConstraint(columnNames={"USER_ID", "COURSE_ID", "TYPE", "NOTIFICATION_TIMESTAMP"})})
 public class Notification implements Serializable {
-	@EmbeddedId
-	private NotificationPk pk;
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name="NOTIFICATION_ID")
+	private Long id;
+	@ManyToOne
+	@JoinColumn(name="COURSE_ID")
+	private Course course;
+	@ManyToOne
+	@JoinColumn(name="USER_ID")
+	private User user;
+	@Column(name="NOTIFICATION_TIMESTAMP")
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date timestamp;
+	@Column(name="TYPE", length=50)
+	private String type;
 	@Column(name="STATUS", length=10, nullable=false)
 	@Enumerated(EnumType.STRING)
 	private NotificationStatus status;
@@ -31,12 +37,44 @@ public class Notification implements Serializable {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date lastAttempt;
 
-	public NotificationPk getPk() {
-		return pk;
+	public Long getId() {
+		return id;
 	}
 
-	public void setPk(NotificationPk pk) {
-		this.pk = pk;
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Course getCourse() {
+		return course;
+	}
+
+	public void setCourse(Course course) {
+		this.course = course;
+	}
+
+	public Date getTimestamp() {
+		return timestamp;
+	}
+
+	public void setTimestamp(Date timestamp) {
+		this.timestamp = timestamp;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 
 	/**
