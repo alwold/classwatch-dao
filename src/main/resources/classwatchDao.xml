@@ -75,6 +75,7 @@
 		<property name="caches">
 			<set>
 				<bean class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean" p:name="classes"/>
+				<bean class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean" p:name="classStatuses"/>
 			</set>
 		</property>
 	</bean>
