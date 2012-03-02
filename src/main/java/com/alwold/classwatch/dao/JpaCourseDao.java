@@ -1,12 +1,6 @@
 package com.alwold.classwatch.dao;
 
-import com.alwold.classwatch.model.Course;
-import com.alwold.classwatch.model.CourseStatus;
-import com.alwold.classwatch.model.CourseStatusPk;
-import com.alwold.classwatch.model.Status;
-import com.alwold.classwatch.model.Term;
-import com.alwold.classwatch.model.User;
-import com.alwold.classwatch.model.UserCourse;
+import com.alwold.classwatch.model.*;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -115,7 +109,7 @@ public class JpaCourseDao extends JpaDaoSupport implements CourseDao {
 	}
 
 	public List<User> getActiveWatchers(Course course) {
-		return getJpaTemplate().find("select uc.pk.user from UserCourse uc where uc.pk.course = ? and uc.notified = ?", course, false);
+		return getJpaTemplate().find("select uc.user from UserCourse uc where uc.course = ? and uc.notified = ?", course, false);
 	}
 	
 	public List<Course> getCoursesWithWatchers() {
