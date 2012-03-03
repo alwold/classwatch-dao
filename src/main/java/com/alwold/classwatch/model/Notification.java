@@ -21,7 +21,7 @@ public class Notification implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="USER_ID")
 	private User user;
-	@Column(name="NOTIFICATION_TIMESTAMP")
+	@Column(name="NOTIFICATION_TIMESTAMP", columnDefinition="TIMESTAMP WITH TIME ZONE")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date timestamp;
 	@Column(name="TYPE", length=50)
@@ -33,7 +33,7 @@ public class Notification implements Serializable {
 	private Integer attempts;
 	@Column(name="INFO", length=255, nullable=true)
 	private String info;
-	@Column(name="LAST_ATTEMPT")
+	@Column(name="LAST_ATTEMPT", columnDefinition="TIMESTAMP WITH TIME ZONE")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date lastAttempt;
 
