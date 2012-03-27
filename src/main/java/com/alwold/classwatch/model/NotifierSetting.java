@@ -15,15 +15,15 @@ import javax.persistence.UniqueConstraint;
  * @author alwold
  */
 @Entity
-@Table(name="NOTIFIER_SETTING", uniqueConstraints={@UniqueConstraint(columnNames={"USER_ID", "TYPE"})})
+@Table(name="NOTIFIER_SETTING", uniqueConstraints={@UniqueConstraint(columnNames={"USER_COURSE_ID", "TYPE"})})
 public class NotifierSetting {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="NOTIFIER_SETTING_ID")
 	private Long id;
 	@ManyToOne
-	@JoinColumn(name="USER_ID")
-	private User user;
+	@JoinColumn(name="USER_COURSE_ID")
+	private UserCourse userCourse;
 	@Column(name="TYPE", length=50)
 	private String type;
 	@Column(name="ENABLED", nullable=false)
@@ -53,11 +53,11 @@ public class NotifierSetting {
 		this.type = type;
 	}
 
-	public User getUser() {
-		return user;
+	public UserCourse getUserCourse() {
+		return userCourse;
 	}
 
-	public void setUser(User user) {
-		this.user = user;
+	public void setUserCourse(UserCourse userCourse) {
+		this.userCourse = userCourse;
 	}
 }
