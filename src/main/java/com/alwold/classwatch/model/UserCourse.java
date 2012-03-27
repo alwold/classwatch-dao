@@ -30,7 +30,9 @@ public class UserCourse implements Serializable {
 	@JoinColumn(name="COURSE_ID")
 	private Course course;
 	@Column(name="NOTIFIED", nullable=false)
-	private boolean notified;
+	private Boolean notified;
+	@Column(name="PAID", nullable=false)
+	private Boolean paid;
 
 	public Long getId() {
 		return id;
@@ -59,11 +61,20 @@ public class UserCourse implements Serializable {
 	 * Have notifications been delivered or queued?
 	 * @return true if delivered or queued, false otherwise
 	 */
-	public boolean isNotified() {
+	public Boolean isNotified() {
 		return notified;
 	}
 
-	public void setNotified(boolean notified) {
+	public void setNotified(Boolean notified) {
 		this.notified = notified;
 	}
+
+	public Boolean getPaid() {
+		return paid;
+	}
+
+	public void setPaid(Boolean paid) {
+		this.paid = paid;
+	}
+	
 }
